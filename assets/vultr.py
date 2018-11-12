@@ -5,6 +5,9 @@
 import re
 import os
 import shutil
+from pathlib import Path
+
+home = Path.home()
 
 config = {"ssh_port": 0,
           "ssh_key_file": ".ssh/authorized_keys",
@@ -13,7 +16,7 @@ config = {"ssh_port": 0,
 
 
 def load_config():
-    with open("~/vultr.config") as fd:
+    with open(home / "vultr.config") as fd:
         for line in fd.readlines():
             split_index = line.find("=")
             config[(line[0:split_index]).strip()] = (line[split_index + 1:]).strip()
@@ -62,9 +65,9 @@ def config_ssh():
         os.system("sudo /etc/init.d/ssh restart")
 
 def config_ss():
-    ss_config_dir = "ss-config"
-    ss_config_file = ss_config_dir + "/6ss.json"
-    ss_start_file = ss_config_dir + "/6ss.sh"
+    ss_config_dir = home / "ss-config"
+    ss_config_file = ss_config_dir / "6ss.json"
+    ss_start_file = ss_config_dir / "6ss.sh"
     shadow_sock_config = """{{
     "server"     :"::",
     "local_port" : 1080,
