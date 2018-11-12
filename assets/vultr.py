@@ -13,7 +13,7 @@ config = {"ssh_port": 0,
 
 
 def load_config():
-    with open("vultr.config") as fd:
+    with open("~/vultr.config") as fd:
         for line in fd.readlines():
             split_index = line.find("=")
             config[(line[0:split_index]).strip()] = (line[split_index + 1:]).strip()
