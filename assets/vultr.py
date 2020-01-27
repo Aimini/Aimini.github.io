@@ -75,7 +75,7 @@ def config_ss():
         "{ss_port}" : "{ss_password}"
     }},
     "timeout": 2048,
-    "method"     : "aes-256-gcm"
+    "method"     : "aes-256-cfb"
 }}"""
 
     shadow_sock_start_sh = """#!/bin/sh
