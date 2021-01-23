@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        teste
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel='prefetch' href='fonts/cambria.ttc'>
+    <link rel='prefetch' href='fonts/mvboli.ttf'>
+    <link rel='prefetch' href='fonts/Fine Sans.ttf'>
+    <link rel='prefetch' href='fonts/heather script two.ttf'>
+    <link rel='prefetch' href='back.jpg'>
+    <link rel='prefetch' href='front.jpg'>
+    <meta charset="utf8">
+    <style>
+        @font-face {
+            font-family: Cambria;
+            src: url('fonts/cambria.ttc');
+        }
+
+        @font-face {
+            font-family: "MV boli";
+            src: url('fonts/mvboli.ttf');
+        }
+
+        @font-face {
+            font-family: "Fine Sans";
+            src: url('fonts/Fine Sans.ttf');
+        }
+
+        @font-face {
+            font-family: "heather script two";
+            src:url("fonts/heather script two.ttf");
+        }
+
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background: #fafafa;
+        }
+
+        #card-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateX(0%);
+            transition-duration: .4s;
+
+        }
+
+        #puzzle-cards {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            transition-duration: .4s;
+            z-index: -1;
+        }
+
+ 
+
+        #main-card-wrapper {
+            transition-duration: .4s;
+        }
+
+        #main-card {
+            width: 35em;
+            height: 23.33em;
+            position: relative;
+            transform: perspective(1300px) rotateY(0deg);
+            transform-origin: 50%;
+            overflow: visible;
+        }
+
+        #main-card .front {
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: .5rem;
+        }
+
+        #main-card .back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: none;
+            border-radius: .5rem;
+        }
+
+        #sign-group {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            padding: 1em;
+            transform: translate(0,0);
+            text-align: center;
+            transition-duration: .2s;
+        }
+
+        #sign-group .one-sign {
+            position: relative;
+            transition-duration: .3s;
+            display: inline-block;
+        }
+        #sign-group .one-sign .deco-animate-wrapper{
+            border-radius: 3px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+            max-width: 0;
+            transition-duration: .2s;
+        }
+
+        #sign-group .one-sign.selected .deco-animate-wrapper{
+            max-width: 100%;
+        }
+
+        #sign-group .one-sign .letter {
+            transition-duration: .3s;
+            filter: invert(1) blur(0px);;
+        }
+
+        #sign-group .one-sign .deco {
+
+        }
+
+        #main-card-backimg-wrapper {
+            overflow: hidden;
+            border-radius: .5rem;
+            width: 100%;
+        }
+
+        #main-card .header {
+            height: 35%;
+            top: -28%;
+        }
+
+        #main-card .header2 {
+            height: 30%;
+        }
+
+        #div-nekos-group {
+            position: absolute;
+            right: 0;
+            bottom: 1em;
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.21));
+
+        }
+
+        #div-nekos-group-wrapper {
+            transition-duration: .4s;
+            transform-origin: 100% 100%;
+            transform: translateY(0px) rotateZ(0deg);
+
+            
+            display: flex;
+            padding: 0em .5em;
+            background: #ffebef8f;
+            /*   border-bottom-left-radius: .5em;
+               border-top-left-radius: .5em;*/
+            padding-left: 2em;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 1.5em 50%);
+        }
+
+        #div-nekos-answers {
+            opacity: 0;
+            transition-duration: .4s;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            left: 1em;
+            top: .3em;
+            color: #f48f93;;
+            font-size: 2.3em;
+
+        }
+
+
+        .card {
+            flex-shrink: 0;
+            height: 21rem;
+            width: 15rem; /*黄金分割对对对*/
+
+            margin: 1em 1.5em;
+            overflow: hidden; /*溢出的部分不显示*/
+            border-radius: .5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+
+            transition: transform .4s, margin-bottom .2s, margin-top .2s, box-shadow .2s;
+            transform: perspective(1300px) rotateY(0deg);
+            transform-origin: 50%;
+        }
+
+        .card:hover {
+            margin-top: .5em;
+            margin-bottom: 1.5em;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, .1);
+            cursor: pointer;
+        }
+
+        .card.invert, #main-card.invert {
+            transform: perspective(1300px) rotateY(180deg);
+        }
+        
+        .card .front {
+            position: relative;
+            height: 100%;
+        }
+
+        .card .front > img {
+            width: 100%;
+            height: 100%;
+        }
+
+
+
+        .card .header {
+            background: rgba(237, 226, 196, 0.85);
+            height: 25%;
+            width: 200%;
+            top: -15%;
+            left: -10%;
+            position: absolute;
+            transform: rotate(-12deg);
+        }
+
+        .card .header2 {
+            background: rgba(255, 205, 131, 0.68);
+            height: 25%;
+            width: 200%;
+            top: -12%;
+            left: -10%;
+            position: absolute;
+            transform: rotate(12deg);
+        }
+
+        .card .back {
+            background: linear-gradient(#ffffff 80%, rgba(255, 255, 255, 0) 0) 0 0, radial-gradient(circle closest-side, #FFFFFF 53%, rgba(255, 255, 255, 0) 0) 0 100px, radial-gradient(circle closest-side, #FFFFFF 53%, rgba(255, 255, 255, 0) 0) 55px 100px #48B;
+            /* background: linear-gradient(#ffffff 50%, rgba(255,255,255,0) 0) 0 0, radial-gradient(circle closest-side, #FFFFFF 53%, rgba(255,255,255,0) 0) 0 0, radial-gradient(circle closest-side, #FFFFFF 50%, rgba(255,255,255,0) 0) 55px 0 #48B; */
+            background-size: 110px calc(100% - 0em);
+            background-repeat: repeat-x;
+            position: relative;
+            transform: rotateY(180deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100%;
+            font-size: 1.5em;
+        }
+
+        /*卡片背面回问题的样式 */
+        .card .back .question {
+            font-family: 幼圆;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .card .back .answer-area {
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        /*卡片背面回答区（包括输入框）的字体 */
+        .card .back .answer-area, .card input[aie-answer-input] {
+            font-family: "Cambria";
+        }
+
+        /*
+        卡片背面输入框的样式
+        */
+
+        .card input[aie-answer-input] {
+            backgrounnd: transparent;
+            padding: .2em .3em;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            width: .7em;
+            font-size: 1em;
+            text-align: center;
+            transition-duration: .2s;
+
+            color: #222222bf;
+
+        }
+
+        .card.resolve input[aie-answer-input] {
+            padding: .2em 0em;
+            color: #ff6161bf;
+        }
+
+        .card input[aie-answer-input]:hover {
+            box-shadow: 0 0px 1px rgba(0, 0, 0, .4) inset;
+        }
+
+        .card.resolve input[aie-answer-input]:hover {
+            cursor: pointer;
+        }
+
+        .card input[aie-answer-input]:focus {
+            box-shadow: 0 1px 1.5px rgba(0, 0, 0, .2) inset;
+            background: #fcfcfc;
+        }
+
+        .card input[aie-answer-input][readonly] {
+            box-shadow: none;
+
+        }
+
+        /*
+         谜题卡片的左上角谜底的样式
+         当解开此卡片后，左上角问号隐藏，显示数字
+      */
+        .card .front-answer {
+            position: absolute;
+            color: white;
+            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3);
+            font-family: "MV boli";
+            padding: .7em 1em;
+        }
+
+        .card .front-answer .front-answer-wrapper {
+            position: relative;
+            font-size: 1.6em;
+        }
+
+        .card .front-answer .front-answer-wrapper > span {
+            position: absolute;
+            transition-duration: .2s;
+            opacity: 1;
+        }
+
+        .card .front-answer .front-answer-wrapper > span[aie-answer] {
+            opacity: 0;
+        }
+
+        .card.resolve .front-answer .front-answer-wrapper > span {
+            opacity: 0;
+        }
+
+        .card.resolve .front-answer .front-answer-wrapper > span[aie-answer] {
+            opacity: 1;
+        }
+
+        #song-puzzle rt {
+            font-size: 100%;
+            color: #222;
+            font-family: 黑体;
+        }
+
+        /*
+          解决玩所有卡片谜题后的效果
+         */
+        #main-card.solved-all #div-nekos-group:hover #div-nekos-group-wrapper {
+            transform: translateY(0px) rotateZ(-5deg);
+        }
+
+        #main-card.solved-all.drop-down-nekos #div-nekos-group-wrapper,
+        #main-card.solved-all.drop-down-nekos #div-nekos-group:hover #div-nekos-group-wrapper {
+            opacity: 0;
+            transform: translateY(200px) rotateZ(0deg);
+        }
+
+        /*
+          点击掉喵咪横条后
+         */
+        #main-card.solved-all.drop-down-nekos #div-nekos-group-wrapper ~ #div-nekos-answers {
+            opacity: 1;
+            font-family: "Fine Sans";
+        }
+
+        /*
+          签名谜题样式，需要点击掉喵咪横条才能触发
+         */
+        #main-card.solved-all.drop-down-nekos:not(.solved-sign-puzzle) #sign-group .one-sign:hover {
+            filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, .41));
+        }
+
+        #main-card #sign-group .one-sign:nth-child(3) {
+            display: inline-flex;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        #main-card.solved-all.drop-down-nekos #sign-group .one-sign.blur:not(.selected) {
+            filter: blur(2px);
+        }
+
+        #main-card.solved-all.drop-down-nekos:not(.solved-sign-puzzle) #sign-group .one-sign:hover img {
+             transform: scale(1.1);
+         }
+
+        #main-card.solved-all.drop-down-nekos.solved-sign-puzzle #sign-group .one-sign:nth-child(3).hide {
+            max-width: 0;
+        }
+
+        /*
+         最后调出爱心的svg
+         */
+        #main-card .front-last,#main-card .back-last{
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+        #main-card  svg{
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .2));
+            overflow: visible;
+            transition-duration: .2s;
+        }
+        #main-card.solved-all.drop-down-nekos.solved-sign-puzzle.the-last-heart:hover{
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+
+        #main-card  svg:hover{
+            margin-top: -0.5em;
+            margin-bottom: .5em;
+            filter: drop-shadow( 0 1px 2px rgba(0, 0, 0, .2));
+        }
+
+        #main-card  .text{
+           position: absolute;
+        }
+
+        @media screen and (max-width: 650px) {
+            #puzzle-cards {
+                flex-direction: column;
+            }
+            
+        }
+
+    </style>
+    <script>
+
+        /*
+            *绑定基本工具函数
+            *
+        */
+
+        function initMyToolFunction() {
+            Element.prototype.toggleClass =
+                function (className) {
+                    if (this.classList.contains(className)) {
+                        this.classList.remove(className);
+                    }
+                    else {
+                        this.classList.add(className);
+                    }
+                }
+
+            Element.prototype.hasClass = function (className) {
+                return this.classList.contains(className);
+            }
+        }
+
+
+        //卡片列表
+        var $cardContainers;
+        //主卡片，显示最终结果
+        var $mainCard;
+        var $mainCardFront;
+        var $mainCardBack;
+        var $mainCardWrapper;
+        var $puzzleCards;
+        var $divNekosGroup;
+        var $divNeokosGroupWrapper;
+        var $signGroup;
+        var mainCardScale = 1;
+        var mainCardWidth = 0;
+        var mainCardHeight = 0;
+
+        window.onload = function () {
+            initMyToolFunction();
+            $cardContainers = document.getElementById("card-container");
+            $mainCard = document.getElementById("main-card");
+            $mainCardFront = $mainCard.querySelector(".front");
+            $mainCardBack = $mainCard.querySelector(".back");
+            $mainCardWrapper = document.getElementById("main-card-wrapper");
+            $puzzleCards = document.getElementById("puzzle-cards");
+            $divNekosGroup = document.getElementById("div-nekos-group");
+            $divNeokosGroupWrapper = document.getElementById("div-nekos-group-wrapper");
+            $signGroup = document.getElementById("sign-group");
+            //createCards();
+
+            let $allCards = document.querySelectorAll(".card");
+            $allCards.forEach(function ($one) {
+                $one.onclick = invertMainCard;
+            });
+            // windowAddMouseWheel();
+            bindAnswerToInput();
+            bindNekoGroupClick();
+            bindSignPuzzleMouseOverOrLeave();
+            bindSignPuzzleClick();
+            //inverAllCard();
+            AdjustMainCard();
+            
+             //autoSolveAllPuzzleCard();
+           
+        };
+
+        /*
+        * 自动解决所有卡片谜题，方便调试签名谜题
+        */
+        function autoSolveAllPuzzleCard() {
+            document.querySelectorAll("input[aie-answer-input]").forEach(function (targetAnswerInput) {
+                var parentCard = targetAnswerInput.closest(".card");
+                var answerStr = parentCard.querySelector("[aie-answer]").innerText.trim();
+                targetAnswerInput.value = answerStr;
+                checkInputAnswer(targetAnswerInput);
+            });
+             $divNekosGroup.click();
+
+            imgAnswer.forEach(function(one){
+                $signGroup.querySelector(`.one-sign:nth-child(${one})`).click();
+            });
+        }
+
+
+        /*
+        * 翻转所有卡片，方便调试样式，
+       */
+        function inverAllCard() {
+            document.querySelectorAll(".card").forEach(function (e) {
+                e.click();
+            })
+        }
+
+
+        /*
+        */
+        var imgSrcList = ["1.png", "2.png", "3.png", "4.png"];
+        var imgAnswer = [1, 4, 5, 2];
+        var colorTable = [
+            ["rgba(237, 226, 196, 0.85)", "rgba(255, 205, 131, 0.68)"],
+            ["rgba(234, 188, 203, 0.85)", "rgba(255, 179, 191, 0.68)"],
+            ["rgba(196, 228, 237, 0.85)", "rgba(160, 204, 255, 0.68)"],
+            ["rgba(222, 196, 237, 0.85)", "rgba(197, 157, 255, 0.68)"]];
+
+        //获取下一组卡片的数据
+        // imgSrc,imgMainCardSrc,imgAnswer
+        var useIdxList = null;
+
+        function nextCardData() {
+            if (useIdxList == null) {
+                useIdxList = [];
+                imgSrcList.forEach(function (ele, idx) {
+                    useIdxList.push(idx);
+                });
+            }
+
+            var idx = Math.floor(Math.random() * useIdxList.length);
+            var imgScrListIdx = useIdxList[idx];
+            useIdxList = useIdxList.filter(e => e != imgScrListIdx);
+
+            var oneImgSrc = imgSrcList[imgScrListIdx];
+            var dotIdx = oneImgSrc.lastIndexOf('.');
+            var name = oneImgSrc.substr(0, dotIdx);
+            var subfix = oneImgSrc.substr(dotIdx, oneImgSrc.length);
+            var oneMainCardImgSrc = name + "_bg" + subfix;
+            return [oneImgSrc, oneMainCardImgSrc, imgAnswer[imgScrListIdx]]
+        }
+
+        /*
+        生成卡片，现在没啥用了
+        */
+        function createCards() {
+            var $divNekosGroupWrapper = document.getElementById('div-nekos-group-wrapper');
+            imgSrcList.forEach(
+                function (imgSrc, idx) {
+                    var $oneCard = document.createElement("div");
+                    var oneCardData = nextCardData();
+                    var colorPair = colorTable[idx % colorTable.length];
+                    $oneCard.innerHTML = `
+                     <div class="card">
+                        <div class="front">
+                                <span class=" header" style="background:${colorPair[0]}">
+                                </span>
+                            <span class=" header2" style="background:${colorPair[1]}">
+                                </span>
+                                 <div class="front-answer">
+                                    <div class="front-answer-wrapper">
+                                    <span aie-answer >
+                                        ${oneCardData[2]}
+                                    </span>
+                                        <span  >
+                                        ?
+                                    </span>
+                                    </div>
+                                </div>
+                            <img src=" ${oneCardData[0]}">
+                        </div>
+                        <div class="back" style="display: none">
+                            <input type="text" aie-answer-input placeholder="?">
+                        </div>
+                    </div>
+                `;
+                    $oneCard = $oneCard.firstElementChild;
+                    var $oneCardImg = $oneCard.getElementsByTagName("img")[0];
+                    $cardContainers.appendChild($oneCard);
+                    adjustSize($oneCardImg, $oneCard.clientWidth, $oneCard.clientHeight);
+
+                    var $MianCardImg = document.createElement("img");
+                    $MianCardImg.setAttribute("src", oneCardData[1]);
+                    $divNekosGroupWrapper.appendChild($MianCardImg);
+                    adjustSize($MianCardImg, 63.6042, 90);
+
+                }
+            )
+        }
+
+        //调整图片大小，使其充满指定的宽和高，
+        function adjustSize($img, width, height) {
+            let a = function () {
+                let imgW = $img.naturalWidth;
+                let imgH = $img.naturalHeight;
+                let wScale = width / imgW;
+                let hScale = height / imgH;
+                let scale = Math.max(wScale, hScale);
+                $img.setAttribute("height", imgH * scale);
+                $img.setAttribute("width", imgW * scale);
+            };
+            $img.onload = a;
+        }
+
+        function adjustSizeFitHeight($img, height) {
+            let a = function () {
+                let imgW = $img.naturalWidth;
+                let imgH = $img.naturalHeight;
+                let hScale = height / imgH;
+                $img.setAttribute("height", imgH * hScale);
+                $img.setAttribute("width", imgW * hScale);
+            };
+
+            $img.onload = a;
+            if ($img.width !== 0)
+                a();
+
+        };
+
+        let cardsContainerScrollX = 0;
+
+
+        /*
+        * 监听滚动事件，用于卡片横向滚动
+        * 
+        function windowAddMouseWheel() {
+            let scrollFunc = function (e) {
+                //浏览器的宽度
+                let documnetW = document.documentElement.clientWidth || document.body.clientWidth;
+                e = e || window.event;
+                if (e) {  //判断浏览器IE，谷歌滑轮事件
+                    let delta = e.wheelDelta | e.detail*60;
+                    let nextScrollX = cardsContainerScrollX + 1.2 * delta;
+                    //如果滚动到最左边
+                    if (nextScrollX < 0) {
+                        cardsContainerScrollX = 0;
+                        //如果滚动到最右边
+                    } else if (nextScrollX > $cardContainers.scrollWidth - documnetW)
+                        cardsContainerScrollX = $cardContainers.scrollWidth - documnetW;
+                    else
+                        cardsContainerScrollX = nextScrollX;
+                    $cardContainers.style.transform = "translateX(-" + cardsContainerScrollX + "px)";
+                }
+
+            };
+            //给页面绑定滑轮滚动事件
+            if (document.addEventListener) {
+                document.addEventListener('DOMMouseScroll', scrollFunc, false);
+                document.addEventListener('mousewheel', scrollFunc, false);
+            }
+        }*/
+
+        /********************************************************************************************************
+         *从下面的代码开始都是解密部分的逻辑了
+         *
+         *
+         *******************************************************************************************************/
+
+        const STAGE_BEGIN = 0;
+        const STAGE_SOLVED_ALL_CARD_PUZZLE = 1;
+        const STAGE_DROP_DOWN_NEKOS_GROUP = 2;
+        const STAGE_SOLVED_SIGN_PUZZLE = 3;
+
+        function currentState() {
+            let cl = $mainCard.classList;
+            if (cl.contains('solved-all')) {
+                if (cl.contains("drop-down-nekos")) {
+                    if (cl.contains('solved-sign-puzzle')) {
+                        return STAGE_SOLVED_SIGN_PUZZLE;
+                    } else {
+                        return STAGE_DROP_DOWN_NEKOS_GROUP
+                    }
+                } else {
+                    return STAGE_SOLVED_ALL_CARD_PUZZLE;
+                }
+            } else {
+                return STAGE_BEGIN;
+            }
+        }
+
+        /*
+            反转主卡片，用于查看背面对应位置的数字
+         */
+        function invertMainCard() {
+            let card = this;
+            let isInvert = card.classList.contains("invert");
+            let cardBack = this.getElementsByClassName("back")[0];
+            let cardFront = this.getElementsByClassName("front")[0];
+            card.toggleClass("invert");
+            setTimeout(function () {
+                cardBack.style.display = !isInvert ? "" : "none";
+                cardFront.style.display = isInvert ? "" : "none";
+            }, 113);//别问我秒数怎么来的，chrome里一帧一帧的看
+            /*
+                默认的曲线是ease，现在可以看它的函数图像来估计
+             */
+        }
+
+        /*
+        检查输入框是否与答案想对应，如果对应则自动翻转到正面，
+        如果全部解出则调用resolvedAll函数
+        */
+
+        let solvedPuzzleNum = 0;
+
+        function checkInputAnswer(targetAnswerInput) {
+            let parentCard = targetAnswerInput.closest(".card");
+            let answerStr = parentCard.querySelector("[aie-answer]").innerText.trim();
+            if (answerStr == targetAnswerInput.value) {
+                targetAnswerInput.setAttribute("readonly", true);
+                parentCard.classList.add("resolve");
+                solvedPuzzleNum += 1;
+                //自动翻转到正面
+                if (parentCard.classList.contains("invert")) {
+                    setTimeout(function () {
+                        parentCard.click();
+                    }, 300);
+                }
+                if (solvedPuzzleNum === imgSrcList.length) {
+                    solvedAllCardPuzzle();
+                }
+            }
+        }
+
+        /*
+         * 绑定答案到输入框,同时防止输入框click事件冒泡
+         */
+        function bindAnswerToInput(answer) {
+            document.body.addEventListener('input', function (event) {
+                let answers = this.querySelectorAll("input[aie-answer-input]");
+
+                answers = [].slice.call(answers);
+                let targetAnswerInput = event.target;
+                if (answers.filter(i => i === targetAnswerInput).length > 0) {
+                    checkInputAnswer(targetAnswerInput);
+                }
+            }, false);
+
+            document.body.addEventListener('click', function (event) {
+                let answers = this.querySelectorAll("input[aie-answer-input]");
+
+                answers = [].slice.call(answers);
+                let targetAnswerInput = event.target;
+                let parentCard = targetAnswerInput.closest(".card");
+                if (answers.filter(i => i === targetAnswerInput).length > 0) {
+                    if (!parentCard.classList.contains("resolve")) {
+                        event.stopPropagation();
+                        console.log("input被点击，阻止冒泡");
+                    }
+                }
+            }, true)
+        }
+
+
+        function solvedAllCardPuzzle() {
+            let documnetW = document.documentElement.clientWidth || document.body.clientWidth;
+            let documentH = document.documentElement.clientHeight || document.body.clientHeight;
+
+            let mainCardHeight = $mainCardWrapper.scrollHeight;
+            let totalHeight = $mainCardWrapper.scrollHeight + $puzzleCards.scrollHeight;
+            let y1 = (documentH - totalHeight) / 2;
+            let y2 = y1 + mainCardHeight;
+
+
+            let offX;
+            let offY;
+            offX = (documnetW - $mainCardWrapper.scrollWidth) / 2 - $mainCardWrapper.offsetLeft;
+            offY = y1 - $cardContainers.offsetTop;
+            if (totalHeight >= documentH)
+                offY = -$cardContainers.offsetTop;
+            // $mainCardWrapper.style.transform = $mainCardWrapper.style.transform + "translateX(" + offX + "px) translateY(" + offY + "px)";
+
+            offX = (documnetW - $puzzleCards.scrollWidth) / 2 - $puzzleCards.offsetLeft;
+            offY = y2 - ($cardContainers.offsetTop + $puzzleCards.offsetTop);
+
+            let  mT = (documentH - $mainCardWrapper.scrollHeight)/2 -  ($mainCardWrapper.offsetTop + $cardContainers.offsetTop);
+            mT /= mainCardScale;
+            //$puzzleCards.style.transform = $puzzleCards.style.transform + "translateX(" + offX + "px)  translateY(" + offY + "px) SCALE(.5)";
+
+            $puzzleCards.style.height = $puzzleCards.clientHeight + 'px';
+            $puzzleCards.style.overflow = 'hidden';
+            
+            setTimeout(
+                
+                function(){
+                    
+                    $puzzleCards.style.height = '0px';
+                    setTimeout(function () {
+                        $cardContainers.style.transform = "translateY(50%)";
+                        AdjustMainCard();
+                    //    $puzzleCards.style.display = "None";
+
+                    }, 400);
+
+                }
+            ,0);
+
+            $mainCard.classList.add("solved-all");
+        }
+
+        /********************************************************************************
+         * 解出四个卡片之后的部分
+         ***************************************************************************/
+
+        /*
+            解出四个卡片的谜题后，点击喵咪横条，横条会掉落
+            ，显示出数字
+         */
+        function bindNekoGroupClick() {
+            $mainCard.addEventListener('click', function (event) {
+                let targetElement = event.target;
+                if (targetElement === $divNekosGroup || targetElement.closest("#div-nekos-group") != null) {
+                    if (currentState() === STAGE_SOLVED_ALL_CARD_PUZZLE) {
+                        event.stopPropagation();
+                        $mainCard.classList.add("drop-down-nekos");
+                    }
+                }
+            }, true)
+        }
+
+        /*
+           横条掉落后，就可以开始解决签名谜题了，只要按照指定的顺序点击签名就行了。
+        */
+        function bindSignPuzzleMouseOverOrLeave() {
+            let $signLetters = $signGroup.querySelectorAll(".one-sign");
+            $signLetters = [].slice.call($signLetters);
+            
+            $mainCard.addEventListener('mouseenter', function (event) {
+                if (currentState() === STAGE_DROP_DOWN_NEKOS_GROUP)
+                    return;
+
+                let targetElement = event.target.closest(".one-sign");
+                if (targetElement === null)
+                    return;
+
+                if ($signLetters.filter(e => e === targetElement).length === 0)
+                    return;
+                    
+                targetElement.classList.remove("blur");
+                $signLetters.filter(e => e !== targetElement).forEach(
+                    e => e.classList.add("blur")
+                )
+            }, true);
+
+            $mainCard.addEventListener('mouseout', function (event) {
+                let targetElement = event.target;
+                if (targetElement.closest(".one-sign") !== null)
+                    targetElement = targetElement.closest(".one-sign");
+                if ($signLetters.filter(e => e === targetElement).length > 0) {
+                    if (currentState() === STAGE_DROP_DOWN_NEKOS_GROUP) {
+                        $signLetters.forEach(e => e.classList.remove("blur"))
+                    }
+                }
+            }, true)
+        }
+
+
+        //*用户点击签名字符的顺序，恢复
+        let userClickOrder = [];
+        function bindSignPuzzleClick() {
+            $mainCard.addEventListener('click', function (event) {
+                let $signLetters = $signGroup.querySelectorAll(".one-sign");
+                $signLetters = [].slice.call($signLetters);
+                let targetElement = event.target;
+                if (targetElement.closest(".one-sign") !== null)
+                    targetElement = targetElement.closest(".one-sign");
+                if ($signLetters.filter(e => e === targetElement).length > 0) {
+                    if (currentState() === STAGE_DROP_DOWN_NEKOS_GROUP) {
+                        event.stopPropagation();
+                        targetElement.classList.add("selected");
+                        let idx = -1;
+                        $signLetters.forEach(function(one,one_idx){
+                                if(one === targetElement)
+                                    idx = one_idx;
+                            });
+                        userClickOrder.push(idx + 1);
+                        for (let i = 0; i < userClickOrder.length; i++) {
+                            if(imgAnswer[i] !== userClickOrder[i]){
+                                userClickOrder = [];
+                                $signLetters.forEach(function(one){
+                                    one.classList.remove("selected");
+                                });
+                                break;
+                            }
+                            if(i == imgAnswer.length - 1){
+                                solvedSignPuzzle();
+                            }
+                        }
+                    }
+                }
+            }, true)
+        }
+        
+        function  solvedSignPuzzle() {
+            let l = ($mainCard.scrollWidth - $signGroup.scrollWidth)/2 - $signGroup.offsetLeft;
+            let t = ($mainCard.scrollHeight - $signGroup.scrollHeight)/2 -  $signGroup.offsetTop;
+            let $signLetters = $signGroup.querySelectorAll(".one-sign");
+            $signLetters.forEach(function(one){
+                one.classList.remove("selected");
+                one.classList.remove("blur");
+            });
+
+
+
+            //当签名移动到中间后，调整布局;先使用translate移动到中间（为了动画），然后抛弃translate,使用flex居中（为了之后的自适应）
+            setTimeout(function () {
+                $signGroup.style.transform = `translate(${l}px,${t}px)`;
+                $signGroup.querySelector(".one-sign:nth-child(5)").style.transform = "translateX(-28px)";
+                $signGroup.querySelector(".one-sign:nth-child(4)").style.transform = "translateX(39px)";
+                setTimeout(function () {
+                    $signGroup.style.right = "auto";
+                    $signGroup.style.bottom = "auto";
+                    $signGroup.style.transitionDuration = "0s";
+                    $signGroup.style.transform = "translate(0,0)";
+                    let $hideLetter = $signGroup.querySelector(".one-sign:nth-child(3) .letter");
+
+                    (function () {
+                        let width = $hideLetter.scrollWidth;
+                        function step(timestamp) {
+                            width -= 10;
+                            if (width > 0 ) {
+                                $hideLetter.style.width = width + "px";
+                                requestAnimationFrame(step);
+                            }
+                            else{
+                                $hideLetter.style.width =  "0px";
+                            }
+                        }
+                        requestAnimationFrame(step);
+                    })();
+
+                },400);
+            },300);
+            $mainCard.classList.add("solved-sign-puzzle");
+            $mainCard.onclick = theLastMainCardClickInvert;
+        }
+
+        var setFront = false;
+        var setBack = false;
+        function theLastMainCardClickInvert(){
+
+            let card = this;
+            let cardBack = this.getElementsByClassName("back-last")[0];
+            let cardFront = this.getElementsByClassName("front-last")[0];
+            let isInvert = card.classList.contains("invert");
+            if(isInvert && !setFront){
+                $mainCardFront.style.display = "none";
+            }else{
+                if(!setBack)
+                {
+                    $mainCardBack.style.display = "none";
+                }
+            }
+
+            $mainCard.classList.add("the-last-heart");
+            card.toggleClass("invert");
+            setTimeout(function () {
+                cardBack.style.display = !isInvert ? "" : "none";
+                if(!setFront){
+                    $mainCardFront.style.display = "none";
+                }
+                cardFront.style.display = isInvert ? "" : "none";
+                if(!setBack){
+                    $mainCardBack.style.display = "none";
+                }
+                $mainCard.style.boxShadow = "0 0px 0px rgba(0, 0, 0, 0)";
+            }, 113);
+        }
+        function AdjustMainCard()
+        {
+            if(mainCardWidth === 0)
+            {
+                mainCardHeight = $mainCardWrapper.clientHeight;
+                mainCardWidth = $mainCardWrapper.clientWidth;
+                mainCardWHRatio = 1.5;
+            }
+            if(document.body.clientWidth <= 650)
+            {
+                $mainCard.style.width = "calc(" + document.body.clientWidth + "px - 3em)";
+                $mainCard.style.height = ($mainCardWrapper.clientWidth / mainCardWHRatio) +"px";
+            }
+            else
+            {
+                
+                $mainCard.style.width = "";
+                $mainCard.style.height = "";
+            }
+        }
+    </script>
+</head>
+
+<body onresize="AdjustMainCard()">
+<div id="card-container">
+    <div id="main-card-wrapper">
+        <div id="main-card" class="card">
+            <!--正面-->
+            <div class="front">
+            <span class=" header">
+
+                </span>
+                <span class=" header2">
+
+                </span>
+                <div id="sign-group">
+                    <span class="one-sign">
+                        <img class="letter" src="sign-1-A.gif" height="60" width="49.340101522842644">
+                         <span class="deco-animate-wrapper"> 
+                             <img class="deco" src="deco.png" height="5.5"
+                             width="49.340101522842644"></span></span>
+
+                    <span class="one-sign">
+                        <img class="letter" src="sign-2-i.gif" height="60" width="21.928934010152282">
+                        <span class="deco-animate-wrapper"> 
+                            <img class="deco" src="deco.png" height="5.5"
+                             width="21.928934010152282"></span></span>
+
+                    <span class="one-sign">
+                        <img class="letter" src="sign-3-m.gif" height="60" width="57.25888324873096">
+                    <span class="deco-animate-wrapper">
+                        <img class="deco" src="deco.png" height="5.5"
+                         width="57.25888324873096"></span>
+                    </span>
+
+                    <span class="one-sign">
+                        <img class="letter" src="sign-4-i.gif" height="60" width="19.18781725888325">
+                          <span class="deco-animate-wrapper">  
+                              <img class="deco" src="deco.png" height="5.5"
+                                                                    width="19.18781725888325"></span>
+                    </span>
+
+                    <span class="one-sign">
+                        <img class="letter" src="sign-5-n.gif" height="60" width="37.766497461928935">
+                        <span class="deco-animate-wrapper">  
+                            <img class="deco" src="deco.png" height="5.5"
+                                                                  width="37.766497461928935"></span>
+                    </span>
+                </div>
+                <img src="front.jpg">
+            </div>
+            <div class="front-last" style="display: none">
+
+                <svg  xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+                 version="1.0" width="100%" height="100%" viewBox="0 0 640 575" id="svg2">
+                    <g>
+                        <path d="M 297.29747,550.86823 C 283.52243,535.43191 249.1268,505.33855 220.86277,483.99412 C 137.11867,420.75228 125.72108,411.5999 91.719238,380.29088 C 29.03471,322.57071 2.413622,264.58086 2.5048478,185.95124 C 2.5493594,147.56739 5.1656152,132.77929 15.914734,110.15398 C 34.151433,71.768267 61.014996,43.244667 95.360052,25.799457 C 119.68545,13.443675 131.6827,7.9542046 172.30448,7.7296236 C 214.79777,7.4947896 223.74311,12.449347 248.73919,26.181459 C 279.1637,42.895777 310.47909,78.617167 316.95242,103.99205 L 320.95052,119.66445 L 330.81015,98.079942 C 386.52632,-23.892986 564.40851,-22.06811 626.31244,101.11153 C 645.95011,140.18758 648.10608,223.6247 630.69256,270.6244 C 607.97729,331.93377 565.31255,378.67493 466.68622,450.30098 C 402.0054,497.27462 328.80148,568.34684 323.70555,578.32901 C 317.79007,589.91654 323.42339,580.14491 297.29747,550.86823 z"
+                              id="path2417" style="fill:#ff1414b3"/>
+                              <text x="180.62" y="290" fill="red" style="font-family: 'heather script two';font-size: 8em;fill: white;">Aini</text>
+                    </g>
+                </svg>
+            </div>
+            <div class="back-last" style="display: none; transform: rotateY(180deg)" >
+                <svg  xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+                version="1.0" width="100%" height="100%" viewBox="0 0 640 575" id="svg2">
+                    <g>
+                        <path d="M 297.29747,550.86823 C 283.52243,535.43191 249.1268,505.33855 220.86277,483.99412 C 137.11867,420.75228 125.72108,411.5999 91.719238,380.29088 C 29.03471,322.57071 2.413622,264.58086 2.5048478,185.95124 C 2.5493594,147.56739 5.1656152,132.77929 15.914734,110.15398 C 34.151433,71.768267 61.014996,43.244667 95.360052,25.799457 C 119.68545,13.443675 131.6827,7.9542046 172.30448,7.7296236 C 214.79777,7.4947896 223.74311,12.449347 248.73919,26.181459 C 279.1637,42.895777 310.47909,78.617167 316.95242,103.99205 L 320.95052,119.66445 L 330.81015,98.079942 C 386.52632,-23.892986 564.40851,-22.06811 626.31244,101.11153 C 645.95011,140.18758 648.10608,223.6247 630.69256,270.6244 C 607.97729,331.93377 565.31255,378.67493 466.68622,450.30098 C 402.0054,497.27462 328.80148,568.34684 323.70555,578.32901 C 317.79007,589.91654 323.42339,580.14491 297.29747,550.86823 z"
+                              id="path2417" style="fill:#ff1414b3"/>
+                        <text x="202.62" y="290" fill="red" style="font-family: 'heather script two';font-size: 8em;fill: white;">Eunseo</text>
+                    </g>
+                </svg>
+            </div>
+            <!-- 反面-->
+            <div class="back" style="display: none;">
+                <div id="main-card-backimg-wrapper">
+                    <img src="back.jpg" height="560" width="560">
+                </div>
+                <div id="div-nekos-group">
+                    <div id="div-nekos-group-wrapper">
+                        <img src="1_bg.png" height="80" width="56.53706666666666">
+                        <img src="3_bg.png" height="80" width="56.53706666666666">
+                        <img src="2_bg.png" height="80" width="56.53706666666666">
+                        <img src="4_bg.png" height="80" width="56.53706666666666">
+                    </div>
+                    <div id="div-nekos-answers">
+                        1452
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="puzzle-cards">
+        <div class="card">
+            <div class="front">
+                                <span class=" header" style="background:rgba(222, 196, 237, 0.85)">
+                                </span>
+                <span class=" header2" style="background:rgba(197, 157, 255, 0.68)">
+                                </span>
+                <div class="front-answer">
+                    <div class="front-answer-wrapper">
+                                    <span aie-answer="">
+                                        1
+                                    </span>
+                        <span>
+                                        ?
+                                    </span>
+                    </div>
+                </div>
+
+                <img src=" 4.png" height="339.59999999999997" width="240">
+            </div>
+            <div class="back" style="display: none">
+
+                <span class="question">Your birthday
+                <hr>
+                </span>
+                <span class="answer-area">1.<input type="text" aie-answer-input="" placeholder="?"></span>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="front">
+                                <span class=" header" style="background:rgba(196, 228, 237, 0.85)">
+                                </span>
+                <span class=" header2" style="background:rgba(160, 204, 255, 0.68)">
+                                </span>
+                <div class="front-answer">
+                    <div class="front-answer-wrapper">
+                                    <span aie-answer="">
+                                        4
+                                    </span>
+                        <span>
+                                        ?
+                                    </span>
+                    </div>
+                </div>
+                <img src=" 2.png">
+            </div>
+            <div class="back" style="display: none">
+            <span class="question">My birthday
+                <hr>
+                </span>
+                <span class="answer-area">6.2<input type="text" aie-answer-input="" placeholder="?"></span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="front">
+                                <span class=" header" style="background:rgba(237, 226, 196, 0.85)">
+                                </span>
+                <span class=" header2" style="background:rgba(255, 205, 131, 0.68)">
+                                </span>
+                <div class="front-answer">
+                    <div class="front-answer-wrapper">
+
+                                    <span aie-answer>
+                                        1
+                                    </span>
+                                    <span>
+                                        ?
+                                    </span>
+                    </div>
+                </div>
+                <img src=" 1.png">
+            </div>
+            <div class="back" style="display: none">
+                <span class="question">你的生日 <hr></span>
+                <span class="answer-area">2.<input type="text" aie-answer-input="" placeholder="?">9</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="front">
+                                <span class=" header" style="background:rgba(234, 188, 203, 0.85)">
+                                </span>
+                <span class=" header2" style="background:rgba(255, 179, 191, 0.68)">
+                                </span>
+                <div class="front-answer">
+                    <div class="front-answer-wrapper">
+                                    <span aie-answer>
+                                        4
+                                    </span>
+                        <span>
+                                        ?
+                                    </span>
+                    </div>
+                </div>
+                <img src=" 3.png">
+            </div>
+            <div class="back" style="display: none;font-size: 1.2em;text-align: center;line-height: 2.5em">
+            <span id="song-puzzle" class="answer-area" style="font-weight: 100;">
+                <span style="display: block"><ruby>
+                    爱<rp>(</rp><rt><ruby>5<rt>&thinsp;</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    能<rp>(</rp><rt><ruby>1<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    不<rp>(</rp><rt><ruby>2<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    能<rp>(</rp><rt><ruby>3<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    够<rp>(</rp><rt><ruby>2<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    永<rp>(</rp><rt><ruby>3<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    远<rp>(</rp><rt><ruby>
+                    <input type="text" aie-answer-input="" placeholder="?"
+                           style="padding-top: 0;
+                            padding-bottom: 0;
+                            height: 1em;">
+                    <rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby></span>
+                <span style="display: block"><ruby>
+                    单<rp>(</rp><rt><ruby>5<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    纯<rp>(</rp><rt><ruby>5<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    没<rp>(</rp><rt><ruby>5<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    有<rp>(</rp><rt><ruby>6<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    悲<rp>(</rp><rt><ruby>5<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby><ruby>
+                    哀&thinsp;&thinsp;&thinsp;&thinsp;&thinsp;<rp>(</rp><rt style="border-bottom: .5px solid;"><ruby>2<rt>&thinsp;.</rt></ruby><ruby>3<rt>&thinsp;.</rt></ruby><ruby>1<rt>&thinsp;.</rt></ruby></rt><rp>)</rp></ruby></span>
+            </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
