@@ -74,7 +74,7 @@ def config_ss():
     "port_password":{{
         "{ss_port}" : "{ss_password}"
     }},
-    "timeout": 512,
+    "timeout": 2048,
     "method"     : "aes-256-cfb"
 }}"""
 
